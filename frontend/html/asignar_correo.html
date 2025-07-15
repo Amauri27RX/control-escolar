@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignar Correo Institucional - UNAC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card-header {
+            background-color: #007bff; /* Azul UNAC o el color primario */
+            color: white;
+        }
+        .email-suggestion-card {
+            background-color: #e9ecef;
+        }
+        .form-control:disabled, .form-control[readonly] {
+            background-color: #e9ecef;
+            opacity: 1;
+        }
+        .status-icon {
+            font-size: 1.2rem;
+        }
+        .status-available {
+            color: green;
+        }
+        .status-unavailable {
+            color: red;
+        }
+        .status-pending {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-3 mb-4">
+        <h1>Sistema de Control Escolar</h1>
+    </header>
+
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h2 class="h5 mb-0"><i class="fas fa-envelope-circle-check me-2"></i>Asignar Correo Institucional a Alumno</h2>
+            </div>
+            <div class="card-body p-4">
+
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <label for="searchMatricula" class="form-label">Buscar Alumno por Matrícula o Nombre:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchMatricula" placeholder="Ej: A000001 o Juan Pérez">
+                            <button class="btn btn-outline-secondary" type="button" id="btnBuscarAlumno"><i class="fas fa-search"></i> Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <fieldset class="mb-4" id="datosAlumnoSection" style="display: none;"> <legend class="h6">Datos del Alumno</legend>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="alumnoMatricula" class="form-label">Matrícula:</label>
+                            <input type="text" class="form-control" id="alumnoMatricula" readonly>
+                        </div>
+                        <div class="col-md-9">
+                            <label for="alumnoNombreCompleto" class="form-label">Nombre Completo:</label>
+                            <input type="text" class="form-control" id="alumnoNombreCompleto" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="alumnoNombres" class="form-label">Nombre(s):</label>
+                            <input type="text" class="form-control" id="alumnoNombres" data-original-value="">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="alumnoPaterno" class="form-label">Apellido Paterno:</label>
+                            <input type="text" class="form-control" id="alumnoPaterno" data-original-value="">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="alumnoMaterno" class="form-label">Apellido Materno:</label>
+                            <input type="text" class="form-control" id="alumnoMaterno" data-original-value="">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div id="correoSection" style="display: none;"> <h3 class="h5 mt-4 mb-3">Generación de Correo Institucional</h3>
+                    <p class="small text-muted">Sintaxis: <span class="fw-bold">nombreusuario@unac.edu.mx</span></p>
+
+                    <div class="row align-items-end g-3 mb-3">
+                        <div class="col-md-7">
+                            <label for="correoSugerido" class="form-label">Correo Sugerido:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="correoSugerido" readonly>
+                                <span class="input-group-text">@unac.edu.mx</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-info w-100" type="button" id="btnVerificarDisponibilidad">
+                                <i class="fas fa-question-circle me-1"></i> Verificar
+                            </button>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <span id="statusCorreo" class="status-icon" title="Estado no verificado">
+                                <i class="fas fa-hourglass-half status-pending"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div id="alertaDisponibilidad" class="alert" role="alert" style="display: none;">
+                        </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <button class="btn btn-link text-secondary px-0" type="button" id="btnGenerarAlternativa" disabled>
+                            <i class="fas fa-sync-alt me-1"></i> Usar Siguiente Sugerencia
+                        </button>
+                        <button class="btn btn-success btn-lg" type="button" id="btnCrearAsignarCorreo" disabled>
+                            <i class="fas fa-check-circle me-2"></i> Crear y Asignar Correo
+                        </button>
+                    </div>
+                </div>
+                <div id="mensajeFinal" class="alert mt-4" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-muted py-4 mt-5">
+        &copy; <span id="currentYear"></span> UNAC - Sistema de Control Escolar
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+   <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const searchMatriculaInput = document.getElementById('searchMatricula');
+        const btnBuscarAlumno = document.getElementById('btnBuscarAlumno');
+        const datosAlumnoSection = document.getElementById('datosAlumnoSection');
+        const correoSection = document.getElementById('correoSection');
+        
+        const alumnoMatriculaInput = document.getElementById('alumnoMatricula');
+        const alumnoNombreCompletoInput = document.getElementById('alumnoNombreCompleto');
+        const alumnoNombresInput = document.getElementById('alumnoNombres');
+        const alumnoPaternoInput = document.getElementById('alumnoPaterno');
+        const alumnoMaternoInput = document.getElementById('alumnoMaterno');
+        
+        const correoSugeridoInput = document.getElementById('correoSugerido');
+        const statusCorreoIconElement = document.getElementById('statusCorreo').querySelector('i');
+        const alertaDisponibilidadDiv = document.getElementById('alertaDisponibilidad');
+        
+        const btnVerificarDisponibilidad = document.getElementById('btnVerificarDisponibilidad');
+        const btnGenerarAlternativa = document.getElementById('btnGenerarAlternativa');
+        const btnCrearAsignarCorreo = document.getElementById('btnCrearAsignarCorreo');
+        const mensajeFinalDiv = document.getElementById('mensajeFinal');
+
+        let currentSuggestionLevel = 0;
+        const DOMINIO = "unac.edu.mx"; // Define tu dominio aquí
+        let alumnoSeleccionado = null; // Para guardar los datos del alumno encontrado
+
+        function mostrarMensaje(elemento, mensaje, tipo) {
+            elemento.textContent = mensaje;
+            elemento.className = `alert alert-${tipo}`;
+            elemento.style.display = 'block';
+        }
+
+        function ocultarMensaje(elemento) {
+            elemento.style.display = 'none';
+            elemento.textContent = '';
+        }
+
+        btnBuscarAlumno.addEventListener('click', async () => {
+            const termino = searchMatriculaInput.value.trim();
+            if (!termino) {
+                mostrarMensaje(mensajeFinalDiv, "Por favor, ingrese una matrícula o nombre para buscar.", "warning");
+                return;
+            }
+            ocultarMensaje(mensajeFinalDiv);
+            datosAlumnoSection.style.display = 'none';
+            correoSection.style.display = 'none';
+            alumnoSeleccionado = null;
+
+            try {
+                // const response = await fetch(`backend/php/buscar_alumno_para_correo.php?termino=${encodeURIComponent(termino)}`);
+                // Para desarrollo local con XAMPP, si la carpeta 'backend' está dentro de 'control-escolar'
+                // y 'control-escolar' es la raíz de tu proyecto en htdocs:
+                const response = await fetch(`/control-escolar/backend/php/buscar_alumno_para_correo.php?termino=${encodeURIComponent(termino)}`);
+
+                if (!response.ok) throw new Error(`Error del servidor: ${response.status}`);
+                const result = await response.json();
+
+                if (result.success && result.alumnos.length > 0) {
+                    // Por ahora, tomamos el primer resultado. Idealmente, si hay múltiples, mostrar una lista para seleccionar.
+                    alumnoSeleccionado = result.alumnos[0]; 
+                    
+                    alumnoMatriculaInput.value = alumnoSeleccionado.matricula;
+                    alumnoNombreCompletoInput.value = `${alumnoSeleccionado.nombre || ''} ${alumnoSeleccionado.apellido_paterno || ''} ${alumnoSeleccionado.apellido_materno || ''}`.trim();
+                    alumnoNombresInput.value = alumnoSeleccionado.nombre || '';
+                    alumnoPaternoInput.value = alumnoSeleccionado.apellido_paterno || '';
+                    alumnoMaternoInput.value = alumnoSeleccionado.apellido_materno || '';
+
+                    // Guardar valores originales por si se editan para la sugerencia
+                    alumnoNombresInput.dataset.originalValue = alumnoSeleccionado.nombre || '';
+                    alumnoPaternoInput.dataset.originalValue = alumnoSeleccionado.apellido_paterno || '';
+                    alumnoMaternoInput.dataset.originalValue = alumnoSeleccionado.apellido_materno || '';
+
+                    datosAlumnoSection.style.display = 'block';
+                    correoSection.style.display = 'block';
+                    currentSuggestionLevel = 0;
+                    generarSugerenciaCorreo();
+                    resetCorreoStatusVisual();
+                    ocultarMensaje(mensajeFinalDiv);
+
+                    if(alumnoSeleccionado.correo_institucional){
+                        mostrarMensaje(alertaDisponibilidadDiv, `Este alumno ya tiene asignado el correo: ${alumnoSeleccionado.correo_institucional}. Puede generar y asignar uno nuevo si es necesario.`, 'info');
+                        correoSugeridoInput.value = alumnoSeleccionado.correo_institucional.split('@')[0]; // Precargar el actual
+                    }
+
+                } else {
+                    mostrarMensaje(mensajeFinalDiv, result.message || "No se encontraron alumnos.", "warning");
+                }
+            } catch (error) {
+                console.error("Error al buscar alumno:", error);
+                mostrarMensaje(mensajeFinalDiv, "Error al conectar con el servidor para buscar alumno.", "danger");
+            }
+        });
+
+        function limpiarTexto(texto) {
+            if (!texto) return '';
+            return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '').replace(/[^a-z0-9]/gi, '');
+        }
+
+        function generarSugerenciaCorreo() {
+            if (!alumnoSeleccionado) return;
+
+            const primerNombre = limpiarTexto(alumnoNombresInput.value.split(" ")[0] || alumnoNombresInput.dataset.originalValue.split(" ")[0]);
+            let apellidoBase = limpiarTexto(alumnoPaternoInput.value || alumnoPaternoInput.dataset.originalValue);
+
+            if (!apellidoBase) {
+                apellidoBase = limpiarTexto(alumnoMaternoInput.value || alumnoMaternoInput.dataset.originalValue);
+            }
+
+            if (!primerNombre || !apellidoBase) {
+                correoSugeridoInput.value = "";
+                mostrarMensaje(alertaDisponibilidadDiv, "Faltan nombres o apellidos para generar sugerencia.", "warning");
+                btnVerificarDisponibilidad.disabled = true;
+                return;
+            }
+            
+            btnVerificarDisponibilidad.disabled = false;
+            ocultarMensaje(alertaDisponibilidadDiv);
+
+            let parteNombreSugerencia = "";
+            if (currentSuggestionLevel === 0) { // Sugerencia: primeraLetraNombre.apellidoPaterno
+                parteNombreSugerencia = primerNombre.charAt(0);
+            } else if (currentSuggestionLevel > 0 && currentSuggestionLevel <= primerNombre.length) {
+                parteNombreSugerencia = primerNombre.substring(0, currentSuggestionLevel);
+            } else { // Si se agotan letras del nombre, se pueden añadir números o usar nombre completo
+                 // Ejemplo: nombreCompleto.apellidoPaterno o primeraLetraNombre.apellidoPaternoNUMERO
+                parteNombreSugerencia = primerNombre + (currentSuggestionLevel - primerNombre.length +1); // pbernal1, pbernal2
+            }
+            
+            correoSugeridoInput.value = parteNombreSugerencia + apellidoBase;
+            resetCorreoStatusVisual();
+        }
+        
+        btnVerificarDisponibilidad.addEventListener('click', async () => {
+            const nombreUsuarioSugerido = correoSugeridoInput.value.trim();
+            if (!nombreUsuarioSugerido) {
+                mostrarMensaje(alertaDisponibilidadDiv, "El campo de correo sugerido está vacío.", "warning");
+                return;
+            }
+
+            const correoCompleto = `${nombreUsuarioSugerido}@${DOMINIO}`;
+            mostrarMensaje(alertaDisponibilidadDiv, `Verificando disponibilidad de ${correoCompleto}...`, "info");
+            statusCorreoIconElement.className = 'fas fa-spinner fa-spin status-pending';
+            btnVerificarDisponibilidad.disabled = true;
+            btnGenerarAlternativa.disabled = true;
+            btnCrearAsignarCorreo.disabled = true;
+
+            try {
+                // const response = await fetch(`backend/php/verificar_correo_disponible.php?correo=${encodeURIComponent(correoCompleto)}`);
+                const response = await fetch(`/control-escolar/backend/php/verificar_correo_disponible.php?correo=${encodeURIComponent(correoCompleto)}`);
+
+                if (!response.ok) throw new Error(`Error del servidor: ${response.status}`);
+                const result = await response.json();
+
+                btnVerificarDisponibilidad.disabled = false;
+                if (result.success) {
+                    if (result.is_available) {
+                        mostrarMensaje(alertaDisponibilidadDiv, `${correoCompleto} está DISPONIBLE.`, "success");
+                        statusCorreoIconElement.className = 'fas fa-check-circle status-available';
+                        btnCrearAsignarCorreo.disabled = false;
+                        btnGenerarAlternativa.disabled = true;
+                    } else {
+                        mostrarMensaje(alertaDisponibilidadDiv, `${correoCompleto} NO está disponible. Intente con otra sugerencia.`, "danger");
+                        statusCorreoIconElement.className = 'fas fa-times-circle status-unavailable';
+                        btnCrearAsignarCorreo.disabled = true;
+                        btnGenerarAlternativa.disabled = false;
+                    }
+                } else {
+                    mostrarMensaje(alertaDisponibilidadDiv, result.message || "Error al verificar disponibilidad.", "danger");
+                    statusCorreoIconElement.className = 'fas fa-exclamation-triangle status-unavailable'; // Icono de error genérico
+                }
+            } catch (error) {
+                console.error("Error al verificar correo:", error);
+                mostrarMensaje(alertaDisponibilidadDiv, "Error de conexión al verificar correo.", "danger");
+                statusCorreoIconElement.className = 'fas fa-exclamation-triangle status-unavailable';
+                btnVerificarDisponibilidad.disabled = false;
+            }
+        });
+
+        btnGenerarAlternativa.addEventListener('click', () => {
+            currentSuggestionLevel++;
+            generarSugerenciaCorreo();
+            // Mantener btnGenerarAlternativa habilitado para más intentos si esta también falla
+            btnGenerarAlternativa.disabled = false; 
+        });
+
+        btnCrearAsignarCorreo.addEventListener('click', async () => {
+            if (!alumnoSeleccionado || !alumnoSeleccionado.matricula) {
+                mostrarMensaje(mensajeFinalDiv, "No se ha seleccionado un alumno.", "warning");
+                return;
+            }
+            const nombreUsuarioFinal = correoSugeridoInput.value.trim();
+            if (!nombreUsuarioFinal) {
+                mostrarMensaje(mensajeFinalDiv, "El nombre de usuario para el correo no puede estar vacío.", "warning");
+                return;
+            }
+            const correoFinal = `${nombreUsuarioFinal}@${DOMINIO}`;
+
+            mostrarMensaje(mensajeFinalDiv, `Asignando el correo ${correoFinal} a ${alumnoSeleccionado.matricula}...`, "info");
+            btnCrearAsignarCorreo.disabled = true;
+            btnVerificarDisponibilidad.disabled = true;
+            btnGenerarAlternativa.disabled = true;
+
+            const formData = new FormData();
+            formData.append('matricula', alumnoSeleccionado.matricula);
+            formData.append('correo_institucional', correoFinal);
+
+            try {
+                // const response = await fetch('backend/php/asignar_correo.php', {
+                const response = await fetch('/control-escolar/backend/php/asignar_correo.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) throw new Error(`Error del servidor: ${response.status}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    mostrarMensaje(mensajeFinalDiv, result.message || `¡Correo ${correoFinal} asignado exitosamente!`, "success");
+                    // Actualizar visualmente el correo asignado si el alumno ya tenía uno
+                    const alumnoEncontradoDiv = document.getElementById('alumnoNombreCompleto'); // Un elemento que muestre datos del alumno
+                    if(alumnoEncontradoDiv){ // Actualizar el correo en la info mostrada del alumno si es que está visible
+                        // Aquí podrías añadir un campo para mostrar el correo institucional actual y actualizarlo
+                    }
+                     // Podrías recargar los datos del alumno para reflejar el cambio si es necesario
+                } else {
+                    mostrarMensaje(mensajeFinalDiv, result.message || "Error al asignar el correo.", "danger");
+                    btnCrearAsignarCorreo.disabled = false; // Re-habilitar para reintentar si es pertinente
+                    btnVerificarDisponibilidad.disabled = false;
+                }
+            } catch (error) {
+                console.error("Error al asignar correo:", error);
+                mostrarMensaje(mensajeFinalDiv, "Error de conexión al asignar el correo.", "danger");
+                btnCrearAsignarCorreo.disabled = false;
+                btnVerificarDisponibilidad.disabled = false;
+            }
+        });
+        
+        function resetCorreoStatusVisual() {
+            statusCorreoIconElement.className = 'fas fa-hourglass-half status-pending'; // Icono pendiente
+            ocultarMensaje(alertaDisponibilidadDiv);
+            btnCrearAsignarCorreo.disabled = true;
+            btnGenerarAlternativa.disabled = true;
+        }
+        
+        // Listeners para actualizar sugerencia si se editan nombres/apellidos manualmente
+        [alumnoNombresInput, alumnoPaternoInput, alumnoMaternoInput].forEach(input => {
+            if (input) { // Verificar que el input exista
+                input.addEventListener('input', () => {
+                    currentSuggestionLevel = 0; 
+                    generarSugerenciaCorreo();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

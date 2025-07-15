@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripcion</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/control_escolar/styleinscripcion.css">
+</head>
+
+<header class="bg-primary text-white d-flex align-items-center p-2">
+  </header>
+
+<body>
+  <div class="container-fluid bd-gutter mt-3 my-md-4 bd-layout">
+
+        <div class="bd-sidebar">
+   <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link active" href="#">Alumno</a></li>
+        <a href="lista_alumnos.html" class="btn btn-primary mt-1 mb-1 text-start">Inscritos</a>
+        <li class="nav-item"><a href="asignar_correo.html" class="nav-link active" href="#">Asignar correo institucional</a></li>
+       <!---- <li class="nav-item"><a class="nav-link" href="#">Ajustes</a></li> -->
+             
+      </ul>
+  </div>
+
+ 
+    <main class="bd-main">
+      <h2 class="my-4">Proceso de inscripción</h2>
+      
+      <form id="formInscripcion"> <fieldset>
+          <div class="container">
+            <legend class="ms-auto mb-3">Programa a Inscribirse</legend>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="institucion" class="form-label">Institución:</label>
+                    <select id="institucion" name="institucion" class="form-select">
+                        <option selected disabled value="">Seleccione una institución</option>
+                        </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nivel_educativo" class="form-label">Nivel Educativo:</label>
+                  <select id="nivel_educativo" name="nivel_educativo" class="form-select">
+                  <option selected disabled value="">Seleccione una opción</option>
+                  <option value="Licenciatura">Licenciatura</option>
+                  <option value="Especialidad">Especialidad</option>
+                  <option value="Maestria">Maestría</option> 
+                  <option value="Doctorado">Doctorado</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="carrera_programa" class="form-label">Seleccionar Carrera/Programa:</label>
+                  <select id="carrera_programa" name="carrera_programa" class="form-select">
+                    <option selected disabled value="">Seleccione una carrera</option>
+                    <option value="Ingeniería en Sistemas">Ingeniería en Sistemas</option>
+                    <option value="Administración de Empresas">Administración de Empresas</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="modalidad" class="form-label">Modalidad:</label>
+                  <select id="modalidad" name="modalidad" class="form-select">
+                    <option selected disabled value="">Seleccione una modalidad</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Mixta">Mixta</option>
+                    <option value="Sabatina">Sabatina</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="rvoe" class="form-label">RVOE:</label>
+                  <input type="text" id="rvoe" name="rvoe" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="fecha_rvoe" class="form-label">Fecha de RVOE:</label>
+                  <input type="date" id="fecha_rvoe" name="fecha_rvoe" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="dgp" class="form-label">DGP:</label>
+                  <input type="text" id="dgp" name="dgp" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="permanencia" class="form-label">Permanencia:</label>
+                  <input type="text" id="permanencia" name="permanencia" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+                  <input type="date" id="fecha_ingreso" name="fecha_ingreso" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="ciclo_inicio" class="form-label">Ciclo Escolar (Inicio):</label>
+                  <select id="ciclo_inicio" name="ciclo_inicio" class="form-select">
+                    <option selected disabled value="">Seleccione</option>
+                    <option value="2025-1">2025-1</option>
+                    <option value="2025-2">2025-2</option>
+                    <option value="2025-3">2025-3</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="ciclo_fin" class="form-label">Ciclo Escolar (Fin):</label>
+                  <select id="ciclo_fin" name="ciclo_fin" class="form-select">
+                    <option selected disabled value="">Seleccione</option>
+                    <option value="2026-1">2026-1</option>
+                    <option value="2026-2">2026-2</option>
+                    <option value="2026-3">2026-3</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="modalidad_titulacion" class="form-label">Modalidad de Titulación:</label>
+                  <input type="text" id="modalidad_titulacion" name="modalidad_titulacion" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="promocion" class="form-label">Promoción aplicada:</label>
+                  <input type="text" id="promocion" name="promocion" class="form-control">
+                </div>
+                <div class="mb-3">
+                        <label for="estatus_alumno" class="form-label">Estatus del Alumno:</label>
+                        <select id="estatus_alumno" name="estatus_alumno" class="form-select">
+                            <option value="Activo" selected>Activo</option>
+                            <option value="Irregular">Irregular</option>
+                            <option value="Baja">Baja</option>
+                            <option value="Egresado">Egresado</option>
+                            <option value="Suspendido">Suspendido</option>
+                        </select>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="container">
+            <legend class="ms-auto mb-3">Antecedentes de estudios</legend>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="nivel_anterior" class="form-label">Nivel educativo anterior:</label>
+                  <input type="text" id="nivel_anterior" name="nivel_anterior" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="nombre_institucion" class="form-label">Nombre de la Institución:</label>
+                  <input type="text" id="nombre_institucion" name="nombre_institucion" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="ubicacion_institucion" class="form-label">Ciudad de la Institución:</label>
+                  <input type="text" id="ubicacion_institucion" name="ubicacion_institucion" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="fecha_inicio_antecedentes" class="form-label">Fecha de Inicio (Antecedentes):</label> <input type="date" id="fecha_inicio_antecedentes" name="fecha_inicio_antecedentes" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="fecha_finalizacion" class="form-label">Fecha de Finalización:</label>
+                  <input type="date" id="fecha_finalizacion" name="fecha_finalizacion" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+<fieldset>
+    <div class="container">
+        <legend class="ms-auto mb-3">Datos Personales</legend>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="matricula" class="form-label">Matrícula:</label>
+                    <input type="text" id="matricula" name="matricula" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre(s):</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="apellido_paterno" class="form-label">Apellido paterno:</label>
+                    <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="apellido_materno" class="form-label">Apellido materno:</label>
+                    <input type="text" id="apellido_materno" name="apellido_materno" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="genero" class="form-label">Género:</label>
+                    <select id="genero" name="genero" class="form-select">
+                        <option selected disabled value="">Seleccione una opción</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                        </select>
+                </div>
+                <div class="mb-3">
+                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="edad" class="form-label">Edad:</label>
+                    <input type="number" id="edad" name="edad" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="pais_nacimiento" class="form-label">País de nacimiento:</label>
+                    <input type="text" id="pais_nacimiento" name="pais_nacimiento" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="ciudad_nacimiento" class="form-label">Ciudad o Estado de nacimiento:</label>
+                    <input type="text" id="ciudad_nacimiento" name="ciudad_nacimiento" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="nacionalidad" class="form-label">Nacionalidad:</label>
+                    <input type="text" id="nacionalidad" name="nacionalidad" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="curp" class="form-label">CURP:</label>
+                    <input type="text" id="curp" name="curp" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="cura" class="form-label">CURA:</label>
+                    <input type="text" id="cura" name="cura" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+        <fieldset>
+            <div class="container">
+                <legend class="ms-auto mb-3">Ubicación de residencia e información de contacto</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="pais_residencia" class="form-label">País:</label>
+                            <input type="text" id="pais_residencia" name="pais_residencia" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ciudad_residencia" class="form-label">Ciudad o Estado:</label>
+                            <input type="text" id="ciudad_residencia" name="ciudad_residencia" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="colonia_residencia" class="form-label">Colonia o localidad:</label>
+                            <input type="text" id="colonia_residencia" name="colonia_residencia" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="calle_residencia" class="form-label">Calle:</label>
+                            <input type="text" id="calle_residencia" name="calle_residencia" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="num_int_residencia" class="form-label">Núm. Int. (Opcional):</label>
+                            <input type="text" id="num_int_residencia" name="num_int_residencia" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="num_ext_residencia" class="form-label">Núm. Ext.:</label>
+                            <input type="text" id="num_ext_residencia" name="num_ext_residencia" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono_personal" class="form-label">Teléfono fijo/móvil:</label>
+                            <input type="tel" id="telefono_personal" name="telefono_personal" class="form-control"> </div>
+                        <div class="mb-3">
+                            <label for="correo_personal" class="form-label">Correo electrónico:</label>
+                            <input type="email" id="correo_personal" name="correo_personal" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="container">
+                <legend class="ms-auto mb-3">Información del lugar de trabajo y el cargo</legend>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="nombre_empresa" class="form-label">Nombre de la Empresa/Institución:</label>
+                            <input type="text" id="nombre_empresa" name="nombre_empresa" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="puesto_trabajo" class="form-label">Puesto o Cargo:</label>
+                            <input type="text" id="puesto_trabajo" name="puesto_trabajo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="area_trabajo" class="form-label">Área o Departamento:</label>
+                            <input type="text" id="area_trabajo" name="area_trabajo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pais_trabajo" class="form-label">Ubicación (País):</label>
+                            <input type="text" id="pais_trabajo" name="pais_trabajo" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="ciudad_trabajo" class="form-label">Ciudad o Estado:</label>
+                            <input type="text" id="ciudad_trabajo" name="ciudad_trabajo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="colonia_trabajo" class="form-label">Colonia o Localidad:</label>
+                            <input type="text" id="colonia_trabajo" name="colonia_trabajo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="calle_trabajo" class="form-label">Calle:</label>
+                            <input type="text" id="calle_trabajo" name="calle_trabajo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="num_int_trabajo" class="form-label">Núm. Int. (Opcional):</label>
+                            <input type="text" id="num_int_trabajo" name="num_int_trabajo" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                         <div class="mb-3">
+                            <label for="num_ext_trabajo" class="form-label">Núm. Ext.:</label>
+                            <input type="text" id="num_ext_trabajo" name="num_ext_trabajo" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono_trabajo" class="form-label">Teléfono:</label>
+                            <input type="tel" id="telefono_trabajo" name="telefono_trabajo" class="form-control"> </div>
+                        <div class="mb-3">
+                            <label for="correo_trabajo" class="form-label">Correo Electrónico Corporativo:</label>
+                            <input type="email" id="correo_trabajo" name="correo_trabajo" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="container">
+            <legend class="ms-auto mb-3">Documentos Requeridos</legend>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="acta_nacimiento_doc" class="form-label">Acta de Nacimiento</label> <input type="text" name="acta_nacimiento_doc" id="acta_nacimiento_doc" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="curp_doc" class="form-label">CURP (Documento)</label> <input type="text" name="curp_doc" id="curp_doc" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="certificado_estudios_doc" class="form-label">Certificado de Estudios</label> <input type="text" name="certificado_estudios_doc" id="certificado_estudios_doc" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="titulo_universitario_doc" class="form-label">Título Universitario (Documento)</label> <input type="text" name="titulo_universitario_doc" id="titulo_universitario_doc" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="comprobante_domicilio_doc" class="form-label">Comprobante de Domicilio</label> <input type="text" name="comprobante_domicilio_doc" id="comprobante_domicilio_doc" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="carta_otem_doc" class="form-label">Carta OTEM</label> <input type="text" name="carta_otem_doc" id="carta_otem_doc" class="form-control">
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div id="mensajeRespuestaServidor" class="mt-3"></div>
+
+        <div class="mt-4 pt-3 text-end border-top">
+          <button type="reset" class="btn btn-outline-secondary btn-lg me-2">Limpiar Formulario</button>
+          <button type="button" id="btnRevisarDatos" class="btn btn-primary btn-lg">Revisar y Enviar</button> </div>
+      </form> </main>
+  </div>
+
+  <div class="modal fade" id="modalConfirmacionInscripcion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl"> <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmar Datos de Inscripción</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="datosParaConfirmarEnModal">
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar/Corregir</button>
+          <button type="button" id="btnEnviarFinal" class="btn btn-primary">Confirmar y Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/control_escolar/script.js"></script> 
+</body>
+</html>

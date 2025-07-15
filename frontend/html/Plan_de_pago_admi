@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Plan de Pagos - Control Escolar</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        /* Mismos estilos de antes */
+        .status-dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .status-pagado { background-color: #4CAF50; }
+        .status-pendiente { background-color: #ff9800; }
+        .status-vencido { background-color: #f44336; }
+        .status-cancelado { background-color: #607d8b; }
+        body { font-family: "Segoe UI", Arial, sans-serif; background-color: #f1f1f1; }
+        /* Ocultar elementos del modo edición por defecto */
+        .edit-controls { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="w3-container w3-padding-32">
+
+    <div class="w3-card-4 w3-margin-bottom">
+        <header class="w3-container w3-blue">
+            <h2>Plan de Pagos - VISTA DE ADMINISTRADOR</h2>
+        </header>
+        <div class="w3-container w3-padding">
+            <p><strong>Alumno:</strong> Ana Sofía Ruelas Gómez</p>
+            <p><strong>Matrícula:</strong> MA2025-001</p>
+            <button onclick="toggleEditMode()" id="btn-edit" class="w3-button w3-blue">✏️ Modificar Plan</button>
+            <button onclick="document.getElementById('addChargeModal').style.display='block'" class="w3-button w3-green">+ Añadir Cargo</button>
+            <button onclick="cancelEditMode()" id="btn-save" class="w3-button w3-red" style="display:none;">🔒 Finalizar Edición</button>
+        </div>
+    </div>
+
+    <div class="w3-card-4">
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-hoverable" id="paymentTable">
+                <thead>
+                    <tr class="w3-light-grey">
+                        <th>Concepto</th>
+                        <th>Vencimiento</th>
+                        <th>Estado</th>
+                        <th class="w3-right-align">Monto</th>
+                        <th class="w3-right-align">Recargos</th>
+                        <th class="w3-right-align">Total</th>
+                        <th class="edit-controls">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-pago-id="1">
+                        <td class="editable" data-field="concepto">Colegiatura Mes 1</td>
+                        <td class="editable" data-field="fecha_vencimiento">05/03/2025</td>
+                        <td class="editable" data-field="estado_pago"><span class="status-dot status-pagado"></span>Pagado</td>
+                        <td class="editable w3-right-align" data-field="monto_regular">$3,500.00</td>
+                        <td class="editable w3-right-align" data-field="recargos">$0.00</td>
+                        <td class="w3-right-align"><strong>$3,500.00</strong></td>
+                        <td class="edit-controls"><button class="w3-button w3-tiny w3-green">Guardar</button></td>
+                    </tr>
+                    <tr data-pago-id="2" class="w3-pale-red">
+                        <td class="editable" data-field="concepto">Colegiatura Mes 2</td>
+                        <td class="editable" data-field="fecha_vencimiento">05/04/2025</td>
+                        <td class="editable" data-field="estado_pago"><span class="status-dot status-vencido"></span>Vencido</td>
+                        <td class="editable w3-right-align" data-field="monto_regular">$3,500.00</td>
+                        <td class="editable w3-right-align" data-field="recargos">$200.00</td>
+                        <td class="w3-right-align"><strong>$3,700.00</strong></td>
+                        <td class="edit-controls"><button class="w3-button w3-tiny w3-green">Guardar</button> <button class="w3-button w3-tiny w3-orange">Dispensar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="addChargeModal" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-top" style="max-width:600px">
+      <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+        <span onclick="document.getElementById('addChargeModal').style.display='none'" class="w3-button w3-xlarge w3-transparent w3-right">×</span>
+        <h2>Añadir Nuevo Cargo</h2>
+      </div>
+      <div class="w3-container w3-padding">
+        <p><label>Concepto</label><input class="w3-input" type="text" id="newConcepto"></p>
+        <p><label>Monto Regular</label><input class="w3-input" type="number" id="newMonto"></p>
+        <p><label>Fecha de Vencimiento</label><input class="w3-input" type="date" id="newFecha"></p>
+        <button class="w3-button w3-green w3-margin-top" onclick="addNewCharge()">Guardar Cargo</button>
+      </div>
+    </div>
+</div>
+
+<script>
+    function toggleEditMode() {
+    document.getElementById('btn-edit').style.display = 'none';
+    document.getElementById('btn-save').style.display = 'inline-block';
+
+    const table = document.getElementById('paymentTable');
+    // Muestra la columna de "Acciones"
+    table.querySelectorAll('.edit-controls').forEach(el => el.style.display = 'table-cell');
+
+    // Itera sobre todas las celdas marcadas como "editables"
+    table.querySelectorAll('td.editable').forEach(cell => {
+        const originalValue = cell.innerText.trim();
+        const fieldType = cell.dataset.field;
+        let inputElement = '';
+
+        switch (fieldType) {
+            case 'fecha_vencimiento':
+                // Suponiendo formato AAAA-MM-DD para el input date
+                inputElement = `<input type="date" class="w3-input w3-border" value="2025-04-05">`;
+                break;
+            case 'estado_pago':
+                inputElement = `
+                    <select class="w3-select w3-border">
+                        <option value="Pendiente" ${originalValue === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                        <option value="Pagado" ${originalValue.includes('Pagado') ? 'selected' : ''}>Pagado</option>
+                        <option value="Vencido" ${originalValue.includes('Vencido') ? 'selected' : ''}>Vencido</option>
+                        <option value="Cancelado" ${originalValue.includes('Cancelado') ? 'selected' : ''}>Cancelado</option>
+                    </select>`;
+                break;
+            default:
+                // Para montos y conceptos
+                const cleanValue = originalValue.replace('$', '');
+                inputElement = `<input type="text" class="w3-input w3-border" value="${cleanValue}">`;
+                break;
+        }
+        cell.innerHTML = inputElement;
+    });
+}
+
+function cancelEditMode() {
+    // Esta función recargaría la página o revertiría los cambios del DOM
+    // a su estado original para cancelar la edición.
+    location.reload(); 
+}
+
+// Lógica para el guardado (esto requeriría una llamada a tu backend)
+// La siguiente es una simulación
+function saveRowChanges(pagoId, data) {
+    console.log(`Guardando datos para el pago ID ${pagoId}:`, data);
+    // AQUÍ IRÍA LA LLAMADA fetch() A TU SCRIPT PHP
+    // fetch('api/update_payment.php', { method: 'POST', body: JSON.stringify(data) })
+    //  .then(...)
+    alert(`Simulación: Datos para el pago ${pagoId} guardados.`);
+}
+
+function addNewCharge() {
+     // AQUÍ IRÍA LA LLAMADA fetch() A TU SCRIPT PHP PARA AÑADIR UN NUEVO REGISTRO
+     alert('Simulación: Nuevo cargo añadido. La tabla se refrescará.');
+     document.getElementById('addChargeModal').style.display='none';
+}
+</script>
+
+</body>
+</html>

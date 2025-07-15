@@ -1,0 +1,142 @@
+body {
+  background-color: #e9ecef; /* Un color de fondo general más suave */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Una fuente más moderna */
+}
+
+.bd-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem; /* Un poco más de espacio entre sidebar y main */
+  min-height: calc(100vh - 70px); /* Ajustar basado en la altura de tu header */
+}
+
+.bd-sidebar {
+  width: 250px;
+  background-color: #ffffff; /* Fondo blanco para la sidebar */
+  padding: 1.5rem;
+  border-right: 1px solid #dee2e6;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* Sombra sutil para la sidebar */
+}
+
+.bd-sidebar h5 {
+  color: #1e3a8a; /* Color primario de Bootstrap para el título del menú */
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.bd-sidebar .nav-link {
+  color: #495057; /* Un color más oscuro para los enlaces */
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem; /* Bordes redondeados para los enlaces */
+}
+
+.bd-sidebar .nav-link.active {
+  background-color: #1e3a8a;
+  color: white;
+  font-weight: 500;
+}
+
+.bd-sidebar .nav-link:hover {
+  background-color: #e9ecef;
+  color: #1e3a8a;
+}
+
+.bd-main {
+  flex-grow: 1;
+  padding: 2rem; /* Mayor padding para el contenido principal */
+  background-color: #ffffff;
+  border-radius: 0.5rem; /* Bordes redondeados para el área principal */
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Sombra sutil */
+}
+
+/* Estilos para los fieldsets y legends */
+fieldset {
+  background-color: #f8f9fa; /* Un fondo ligeramente diferente para los fieldsets */
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem; /* bootstrap's default is 0.375rem for form-control */
+  padding: 1.5rem;
+  margin-bottom: 2rem; /* Más espacio entre fieldsets */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra sutil para cada fieldset */
+}
+
+legend {
+  padding: 0.5em 0.8em;
+  margin-bottom: 1rem;
+  font-size: 1.25rem; /* Tamaño de fuente más grande para la leyenda */
+  font-weight: 600; /* Leyenda en negrita */
+  color: #212529; /* Color oscuro para la leyenda */
+  background-color: #e9ecef; /* Un fondo suave para la leyenda */
+  border-radius: 0.25rem;
+  width: auto; /* Para que la leyenda no ocupe todo el ancho */
+}
+
+/* Mejoras en etiquetas de formulario */
+.form-label {
+  font-weight: 500; /* Hacer las etiquetas un poco más notorias */
+  margin-bottom: 0.5rem;
+}
+
+/* Estilo para el encabezado */
+header.bg-primary {
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #1e3a8a;
+}
+
+header h5 {
+  font-weight: 500; /* Un poco menos de peso si el de la sidebar es 600 */ 
+}
+
+header .rounded-circle {
+  background-color: #ffffff;
+  color: #1e3a8a; /* Texto primario en el círculo */
+  font-weight: bold;
+}
+
+/* Ajuste para el contenedor principal del layout */
+.bd-gutter {
+    --bs-gutter-x: 1.5rem; /* Ajustar el gutter global si es necesario */
+}
+
+/* Título principal dentro de bd-main */
+.bd-main > h2.my-4 {
+  color: #343a40;
+  border-bottom: 2px solid #1e3a8a; /* Línea debajo del título principal */
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem !important; /* Asegurar más espacio debajo del título */
+}
+
+.btn-regresar {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 1.3rem;
+  display: inline-block;
+  margin-bottom: 0;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border: 2px solid #c2d1fc;      /* ✅ marco */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.5rem;          /* ✅ bordes redondeados */
+  transition: all 0.3s ease;
+  background-color: transparent; 
+  z-index: 1000; /* ✅ opcional: asegura que el botón esté por encima de otros elementos */
+}
+
+.btn-regresar i {
+  margin-right: 0.4rem;
+}
+
+.btn-regresar:hover {
+  background-color: #75818f;
+  color: white;
+}
+
+a:link {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}
+

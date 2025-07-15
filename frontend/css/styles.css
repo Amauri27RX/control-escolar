@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-image: url('images/fondo1.png');
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 212px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+header, footer {
+  background-color: #1e3a8a;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+header p {
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: #4b5563;
+  color: white;
+  border-radius: 12px;
+  padding: 36px;
+  width: 100%;
+  max-width: 500px;
+  min-height: 600px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(14, 228, 235, 0.938);
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.boton-usuario {
+  width: 3.5cm;
+  height: 3.5cm;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: black;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.boton-usuario i {
+  font-size: 1.125rem;
+  margin-bottom: 4px;
+}
+
+.boton-usuario:hover {
+  transform: translateY(-20px);
+  box-shadow: 0 10px 25px rgba(9, 213, 240, 0.932);
+}
+
+.admin {
+  background-color: #bc95e2;
+}
+
+.admin:hover {
+  background-color: #d8b4fe;
+}
+
+.maestro {
+  background-color: #80aee6;
+}
+
+.maestro:hover {
+  background-color: #bfdbfe;
+}
+
+.alumno {
+  background-color: #79e09f;
+  margin-bottom: 40px;
+}
+
+.alumno:hover {
+  background-color: #bbf7d0;
+}

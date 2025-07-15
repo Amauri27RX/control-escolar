@@ -1,0 +1,508 @@
+:root {
+    --color-primary: #4361ee;
+    --color-secondary: #3f37c9;
+    --color-success: #28a745; /* Ajustado para consistencia con btn-success */
+    --color-warning: #f72585;
+    --color-danger: #e63946;
+    --color-light: #f8f9fa;
+    --color-dark: #212529;
+
+    /* Nuevas variables para sombras y transiciones */
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 15px rgba(0, 0, 0, 0.12);
+    --transition-ease: all 0.3s ease-in-out;
+}
+
+/* Base styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fb;  
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 30px auto; /* Aumentado el margen superior para más espacio */
+    padding: 0 20px; /* Padding horizontal para evitar que el contenido toque los bordes */
+}
+
+/* Header Section */
+.header-section {
+    background: linear-gradient(120deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: 30px 40px; /* Aumentado padding */
+    border-radius: 15px; /* Bordes más redondeados */
+    box-shadow: var(--shadow-medium);
+    margin-bottom: 30px; /* Más espacio inferior */
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre icono y texto */
+}
+
+.header-section h1 {
+    margin: 0; /* Eliminar margen predeterminado del h1 */
+    font-size: 2.5rem; /* Tamaño de fuente ligeramente más grande */
+    letter-spacing: 0.5px;
+}
+
+.header-section i {
+    font-size: 2.8rem; /* Tamaño del icono un poco más grande */
+}
+
+/* Student Info Card */
+.student-info-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light); /* Sombra más suave */
+    padding: 25px; /* Aumentado padding */
+    margin-bottom: 25px;
+}
+
+.student-info-card p {
+    margin-bottom: 10px; /* Espacio entre párrafos */
+    font-size: 1.05rem; /* Tamaño de fuente ligeramente más grande */
+    color: #555;
+}
+
+.student-info-card strong {
+    color: #333; /* Color más oscuro para el texto fuerte */
+}
+
+.student-info-card i {
+    margin-right: 8px; /* Espacio entre icono y texto */
+}
+
+
+/* Summary Cards */
+.summary-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    padding: 20px;
+    height: 100%;
+    transition: var(--transition-ease); /* Usar variable de transición */
+    border-left: 5px solid; /* Borde más grueso */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye el espacio verticalmente */
+}
+
+.summary-card:hover {
+    transform: translateY(-8px); /* Elevación más pronunciada al hover */
+    box-shadow: var(--shadow-medium); /* Sombra más fuerte al hover */
+}
+
+.summary-card.total {
+    border-left-color: var(--color-primary);
+}
+
+.summary-card.paid {
+    border-left-color: var(--color-success);
+}
+
+.summary-card.pending {
+    border-left-color: var(--color-danger); /* Usar danger para pendiente, warning es más para precacución */
+}
+
+.card-title {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 12px; /* Más espacio */
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-value {
+    font-size: 2.2rem; /* Tamaño más grande para el valor */
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #333; /* Asegurar un color oscuro por defecto */
+}
+
+.card-subtitle {
+    font-size: 0.95rem; /* Tamaño ligeramente más grande */
+    color: #888; /* Color más suave */
+}
+
+/* Action Buttons */
+.action-buttons {
+    margin-bottom: 30px; /* Más espacio inferior */
+    display: flex;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
+    gap: 15px; /* Espacio entre botones */
+    justify-content: flex-end; /* Alinear a la derecha */
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre icono y texto */
+    padding: 12px 22px; /* Más padding */
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--transition-ease);
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem; /* Tamaño de fuente ligeramente más grande */
+    box-shadow: var(--shadow-light); /* Sombra para los botones */
+}
+
+.action-button i {
+    font-size: 1.1rem; /* Tamaño de icono ligeramente más grande */
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--color-secondary);
+    transform: translateY(-3px); /* Elevación más notable */
+    box-shadow: 0 6px 15px rgba(var(--color-primary-rgb, 67, 97, 238), 0.4); /* Sombra de color primario */
+}
+
+.btn-success {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838; /* Tono más oscuro de verde */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(var(--color-success-rgb, 40, 167, 69), 0.4);
+}
+
+.btn-danger {
+    background: var(--color-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b; /* Tono más oscuro de rojo */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(var(--color-danger-rgb, 230, 57, 70), 0.4);
+}
+
+/* Payment Table */
+.payment-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    padding: 25px; /* Aumentado padding */
+    margin-top: 30px;
+    overflow-x: auto; /* Para tablas grandes en pantallas pequeñas */
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.table-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* DataTables Styling */
+#tabla-pagos {
+    width: 100% !important; /* Asegurar que la tabla ocupe el 100% */
+    border-collapse: collapse; /* Quitar espacio entre celdas */
+    margin-top: 20px;
+}
+
+#tabla-pagos thead tr.w3-indigo {
+    background-color: var(--color-primary) !important; /* Usar variable para el color */
+    color: white;
+}
+
+#tabla-pagos th {
+    background-color: var(--color-primary); /* Fondo consistente */
+    color: white;
+    padding: 12px 18px; /* Padding para encabezados */
+    text-align: left;
+    border-bottom: none; /* Eliminar borde inferior de th */
+    font-weight: 600;
+}
+
+#tabla-pagos td {
+    padding: 12px 18px;
+    border-bottom: 1px solid #eee; /* Ligeros bordes entre filas */
+    vertical-align: middle;
+}
+
+#tabla-pagos tbody tr:last-child td {
+    border-bottom: none; /* Eliminar borde inferior de la última fila */
+}
+
+#tabla-pagos .action-buttons-table {
+    display: flex;
+    gap: 8px; /* Espacio entre botones de acción en la tabla */
+    flex-wrap: wrap;
+}
+
+#tabla-pagos .action-buttons-table .w3-button {
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+}
+
+/* Estado de los pagos */
+.status-badge {
+    padding: 7px 14px; /* Más padding */
+    border-radius: 20px;
+    font-size: 0.9rem; /* Tamaño ligeramente más grande */
+    font-weight: 600;
+    display: inline-block; /* Para que el padding funcione bien */
+    min-width: 90px; /* Ancho mínimo para consistencia */
+    text-align: center;
+}
+
+.paid-badge {
+    background-color: #e8f5e9; /* Verde muy claro */
+    color: #2e7d32; /* Verde oscuro */
+}
+
+.pending-badge {
+    background-color: #fff8e1; /* Naranja muy claro */
+    color: #f57f17; /* Naranja oscuro */
+}
+
+.overdue-badge {
+    background-color: #ffebee; /* Rojo muy claro */
+    color: #c62828; /* Rojo oscuro */
+}
+
+.notification-success { background-color: #e8f5e9; color: #2e7d32; }
+.notification-error { background-color: #ffebee; color: #c62828; }
+.notification-warning { background-color: #fff8e1; color: #f57f17; }
+.notification-info { background-color: #e3f2fd; color: #0277bd; }
+
+.notification {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-size: 0.95rem;
+}
+
+/* Modal Styling */
+.w3-modal-content {
+    border-radius: 15px !important; /* Bordes más redondeados */
+    overflow: hidden; /* Asegura que los bordes redondeados se apliquen bien */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2) !important;
+}
+
+.modal-header {
+    background: linear-gradient(120deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: 20px 25px; /* Más padding */
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h4 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.w3-button.w3-display-topright {
+    font-size: 2rem; /* Tamaño más grande para el botón de cerrar */
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    top: 5px;
+    right: 10px;
+    padding: 0 10px;
+}
+
+.w3-container.w3-padding-24 {
+    padding: 24px !important;
+}
+
+.w3-section label {
+    margin-bottom: 8px; /* Espacio entre label y input */
+    display: block; /* Para que ocupen su propia línea */
+    font-weight: 600;
+    color: #444;
+}
+
+.w3-input, .w3-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Bordes más redondeados */
+    font-size: 1rem;
+    box-sizing: border-box; /* Asegura que padding no aumente el ancho */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.w3-input[readonly] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+.w3-input:focus, .w3-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 67, 97, 238), 0.15); /* Sombra de foco más suave */
+}
+
+.modal-footer {
+    padding: 20px 25px; /* Más padding */
+    background: #f0f2f5; /* Fondo más claro */
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px; /* Más espacio entre botones */
+}
+
+/* Overrides for specific w3.css table styles if needed */
+.w3-table-all tr:nth-child(even) {
+    background-color: #f6f9fc; /* Rayado más suave para las filas */
+}
+
+.w3-table-all tr:hover {
+    background-color: #eef2f7 !important; /* Color de hover más distintivo */
+}
+
+.paid-row {
+    background-color: #e8f5e9 !important; /* Verde muy claro para filas pagadas */
+}
+
+.pending-row {
+    background-color: #fff3e0 !important; /* Naranja muy claro para filas pendientes */
+}
+
+.overdue-row {
+    background-color: #fbe9e7 !important; /* Rojo muy claro para filas vencidas */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) { /* Laptops y tablets */
+    .dashboard-container {
+        padding: 0 15px;
+    }
+    .header-section {
+        padding: 25px 30px;
+        flex-direction: column; /* Apilar título e icono en pantallas medianas */
+        text-align: center;
+        gap: 10px;
+    }
+    .header-section h1 {
+        font-size: 2rem;
+    }
+    .header-section i {
+        font-size: 2.2rem;
+    }
+    .summary-card {
+        margin-bottom: 20px; /* Asegurar espacio entre cards en columnas */
+    }
+    .action-buttons {
+        justify-content: center; /* Centrar botones en pantallas medianas */
+    }
+    .action-button {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+    .payment-table-container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) { /* Tablets y móviles */
+    .dashboard-container {
+        padding: 0 10px;
+    }
+    .header-section {
+        padding: 20px 20px;
+    }
+    .header-section h1 {
+        font-size: 1.8rem;
+    }
+    .header-section i {
+        font-size: 2rem;
+    }
+    .student-info-card {
+        padding: 15px;
+    }
+    .student-info-card p {
+        font-size: 0.95rem;
+    }
+    .w3-col.m4.s12 { /* Asegurar que las columnas de info de estudiante se apilen */
+        margin-bottom: 15px;
+    }
+    .summary-card {
+        padding: 18px;
+    }
+    .card-value {
+        font-size: 1.8rem;
+    }
+    .action-buttons {
+        flex-direction: column; /* Apilar todos los botones verticalmente */
+        align-items: stretch; /* Estirar botones al 100% de ancho */
+        gap: 10px;
+    }
+    .action-button {
+        width: 100%;
+        justify-content: center; /* Centrar texto e icono en botones apilados */
+    }
+    .payment-table-container {
+        padding: 15px;
+    }
+    #tabla-pagos th, #tabla-pagos td {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .status-badge {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+    .modal-header h4 {
+        font-size: 1.3rem;
+    }
+    .modal-footer {
+        flex-direction: column-reverse; /* Apilar botones en el footer del modal */
+        gap: 8px;
+    }
+    .modal-footer button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) { /* Móviles muy pequeños */
+    .header-section h1 {
+        font-size: 1.5rem;
+    }
+    .header-section i {
+        font-size: 1.8rem;
+    }
+    .card-value {
+        font-size: 1.5rem;
+    }
+    .action-button {
+        font-size: 0.85rem;
+        padding: 8px 15px;
+    }
+}
+
+/* Utility to ensure consistent RGB for shadows */
+.w3-text-indigo { --color-primary-rgb: 67, 97, 238; }
+.w3-text-green { --color-success-rgb: 40, 167, 69; }
+.w3-text-red { --color-danger-rgb: 230, 57, 70; }

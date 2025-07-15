@@ -1,0 +1,145 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #93c5fd;
+  padding: 0px;
+  margin: 0;
+}
+
+.form-container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: auto;
+}
+
+header {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1e3a8a;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+h2 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-style: italic;
+}
+
+h3 {
+  text-align: center;
+}
+
+label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #444;
+}
+
+input,
+select,
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc; 
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.login-form button {
+  background-color: #1e40af;
+  color: white;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 40px;
+}
+
+
+
+.login-form input {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+input:focus,
+select:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+button {
+  background-color: #007BFF;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.mensaje {
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+.btn-regresar {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 1.3rem;
+  display: inline-block;
+  margin-bottom: 0rem;
+  color: #b0c1ee;
+  font-weight: bold;
+  text-decoration: none;
+  border: 2px solid #c2d1fc;      /* ✅ marco */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.5rem;           /* ✅ bordes redondeados */
+  transition: all 0.3s ease;
+  background-color: transparent;  
+}
+
+.btn-regresar i {
+  margin-right: 0.8rem;
+}
+
+.btn-regresar:hover {
+  background-color: #7283b3;
+  color: white;
+}
+
+a:link {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selecciona tu perfil</title>
+
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="frontend/css/styles.css">
+
+  <!-- Iconos y fuentes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <div class="container">
+    <header>
+      <h1>Oficina Escolar</h1>
+      <p><em>Universidad IUAC de México</em></p>
+    </header>
+
+    <main>
+      <div class="card">
+        <h2>Selecciona tu tipo de usuario:</h2>
+        <div class="button-group">
+          <button onclick="redirigir('admin')" class="boton-usuario admin">
+            <i class="fas fa-user-shield"></i>
+            Administrador
+          </button>
+
+          <button onclick="redirigir('maestro')" class="boton-usuario maestro">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Maestro
+          </button>
+
+          <button onclick="redirigir('alumno')" class="boton-usuario alumno">
+            <i class="fas fa-user-graduate"></i>
+            Alumno
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2025 Oficina Escolar. Todos los derechos reservados.
+    </footer>
+  </div>
+
+  <script>
+    function redirigir(tipo) {
+      switch (tipo) {
+        case 'admin':
+          window.location.href = 'backend/login.php';
+          break;  
+        case 'maestro':
+          window.location.href = 'frontend/html/maestro.html';
+          break;
+        case 'alumno':
+          window.location.href = 'frontend/htmlalumno.html';
+          break;
+      }
+    }
+  </script>
+</body>
+</html>
