@@ -30,7 +30,7 @@
                         <select id="filtroPrograma" class="form-select form-select-lg"></select>
                     </div>
                     <div class="col-md-4">
-                        <label for="filtroCiclo" class="form-label fw-bold">Ciclo Escolar:</label>
+                        <label for="filtroCiclo" class="form-label fw-bold">Periodo:</label>
                         <select id="filtroCiclo" class="form-select form-select-lg"></select>
                     </div>
                     </div>
