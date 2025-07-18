@@ -264,6 +264,9 @@ $stmt_inscripcion_alumno->close();
     );
     if (!$stmt_documentos->execute()) throw new Exception("Error al insertar en documentos_alumno: " . $stmt_documentos->error);
     $stmt_documentos->close();
+
+    $codigo_ciclo_inicio = $_POST['ciclo_inicio'] ?? null; 
+    inscribirAlumnoEnMaterias($conn, $matricula, $dgp_programa, $codigo_ciclo_inicio);
     
     $conn->commit();
     $response['success'] = true;
@@ -278,4 +281,60 @@ $stmt_inscripcion_alumno->close();
 
 $conn->close();
 echo json_encode($response);
+
+
+function inscribirAlumnoEnMaterias($conn, $matricula, $dgp, $codigo_ciclo) {
+    if (empty($matricula) || empty($dgp) || empty($codigo_ciclo)) {
+        throw new Exception("Datos insuficientes para la inscripción automática de materias.");
+    }
+
+    // 1. Encontrar el ID del ciclo escolar
+    $stmt_ciclo = $conn->prepare("SELECT id_ciclo FROM ciclo_escolar WHERE codigo = ?");
+    $stmt_ciclo->bind_param("s", $codigo_ciclo);
+    $stmt_ciclo->execute();
+    $result_ciclo = $stmt_ciclo->get_result();
+    if ($result_ciclo->num_rows === 0) {
+        // Si el ciclo no existe, no podemos continuar.
+        // Podrías crear el ciclo aquí o lanzar un error. Por ahora, lanzamos error.
+        throw new Exception("El ciclo escolar '{$codigo_ciclo}' no existe. Por favor, créelo en la gestión de ciclos.");
+    }
+    $id_ciclo = $result_ciclo->fetch_assoc()['id_ciclo'];
+    $stmt_ciclo->close();
+
+    // 2. Obtener todas las claves de materia para el programa del alumno
+    // Usando la estructura de tabla 'materia' con la columna 'programa_dgp'
+    $stmt_materias = $conn->prepare("SELECT clave_materia FROM materia WHERE programa_dgp = ?");
+    $stmt_materias->bind_param("s", $dgp);
+    $stmt_materias->execute();
+    $result_materias = $stmt_materias->get_result();
+    $claves_materias = $result_materias->fetch_all(MYSQLI_ASSOC);
+    $stmt_materias->close();
+
+    if (empty($claves_materias)) {
+        // No hay materias en el plan de estudios, no hacemos nada.
+        return; 
+    }
+
+    // 3. Preparar la inserción en inscripcion_materia
+    $sql_insert = "INSERT INTO inscripcion_materia (matricula, id_oferta) 
+                   SELECT ?, o.id_oferta
+                   FROM oferta_materia o
+                   WHERE o.id_ciclo = ? AND o.clave_materia = ?";
+    $stmt_insert = $conn->prepare($sql_insert);
+
+    // 4. Iterar e inscribir al alumno en la oferta de cada materia para ese ciclo
+    foreach ($claves_materias as $materia) {
+        $clave_materia = $materia['clave_materia'];
+        
+        // El 'bind_param' debe hacerse dentro del bucle ya que la clave_materia cambia
+        $stmt_insert->bind_param("sis", $matricula, $id_ciclo, $clave_materia);
+        
+        if (!$stmt_insert->execute()) {
+            // Esto puede fallar si no hay una oferta para esa materia en ese ciclo.
+            // Es importante registrar esto como una advertencia en lugar de detener todo.
+            error_log("ADVERTENCIA: No se pudo inscribir la materia '{$clave_materia}' para la matrícula '{$matricula}' en el ciclo '{$codigo_ciclo}'. Verifique que la materia tenga una oferta creada para ese ciclo.");
+        }
+    }
+    $stmt_insert->close();
+}
 ?>
