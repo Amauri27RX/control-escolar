@@ -1,12 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- ESTADO DE LA APLICACIÓN ---
-    let students = [];
+    let allStudents = [];
     let selectedStudent = null;
     let filter = { program: "", status: "", search: "" };
 
     // --- ELEMENTOS DEL DOM ---
     const studentListContainer = document.getElementById('student-list-container');
     const studentDetailContainer = document.getElementById('student-detail-container');
+    const studentListBody = document.getElementById('student-list-body');
+    // Filtros
+    const searchInput = document.getElementById('search');
+    const filtroInstitucion = document.getElementById('filtroInstitucion');
+    const filtroNivel = document.getElementById('filtroNivel');
+    const filtroPrograma = document.getElementById('filtroPrograma');
+    const filtroStatus = document.getElementById('filtroStatus');
 
     // --- FUNCIONES DE API (FETCH) ---
     async function api(action, params = {}) {
@@ -47,40 +54,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderStudentList() {
-        if (!studentListContainer) return;
-        const filteredStudents = students.filter(student => {
-            const fullName = `${student.nombre || ''} ${student.apellido_paterno || ''} ${student.apellido_materno || ''}`;
-            const matchesProgram = !filter.program || student.nivel_educativo === filter.program;
+        if (!studentListBody) return;
+        
+        const filteredStudents = allStudents.filter(student => {
+            const fullName = `${student.nombre || ''} ${student.apellido_paterno || ''} ${student.apellido_materno || ''}`.toLowerCase();
+            const searchLower = filter.search.toLowerCase();
+            
+            const matchesSearch = !filter.search || fullName.includes(searchLower) || student.matricula.toLowerCase().includes(searchLower);
             const matchesStatus = !filter.status || student.estatus_alumno === filter.status;
-            const matchesSearch = !filter.search ||
-                fullName.toLowerCase().includes(filter.search.toLowerCase()) ||
-                student.matricula.toLowerCase().includes(filter.search.toLowerCase());
-            return matchesProgram && matchesStatus && matchesSearch;
+            // El filtrado por institución, nivel y programa ya se hace en el backend
+            
+            return matchesSearch && matchesStatus;
         });
 
-        const statusClass = (status) => {
-            if (status === 'Activo') return 'bg-green-100 text-green-800';
-            if (status === 'Egresado') return 'bg-gray-100 text-gray-800';
-            return 'bg-yellow-100 text-yellow-800';
-        };
-        const programClass = (program) => (program === 'Doctorado' ? 'bg-blue-100 text-blue-800' : 'bg-indigo-100 text-indigo-800');
-
-        studentListContainer.innerHTML = `
-            <div class="space-y-6">
-                <h2 class="text-2xl font-bold mb-4">Gestión de Estudiantes</h2>
-                <div class="flex flex-col md:flex-row gap-4 mb-6">
-                    <div class="flex-1"><label for="search" class="block text-sm font-medium text-gray-700 mb-1">Buscar</label><input type="text" id="search" class="w-full p-2 border border-gray-300 rounded-md" value="${filter.search}" placeholder="Nombre o matrícula..."></div>
-                    <div class="flex-1"><label for="program" class="block text-sm font-medium text-gray-700 mb-1">Programa</label><select id="program" class="w-full p-2 border border-gray-300 rounded-md"><option value="">Todos</option><option value="Doctorado" ${filter.program === 'Doctorado' ? 'selected' : ''}>Doctorado</option><option value="Maestria" ${filter.program === 'Maestria' ? 'selected' : ''}>Maestría</option><option value="Licenciatura" ${filter.program === 'Licenciatura' ? 'selected' : ''}>Licenciatura</option><option value="Especialidad" ${filter.program === 'Especialidad' ? 'selected' : ''}>Especialidad</option></select></div>
-                    <div class="flex-1"><label for="status" class="block text-sm font-medium text-gray-700 mb-1">Estatus</label><select id="status" class="w-full p-2 border border-gray-300 rounded-md"><option value="">Todos</option><option value="Activo" ${filter.status === 'Activo' ? 'selected' : ''}>Activo</option><option value="Egresado" ${filter.status === 'Egresado' ? 'selected' : ''}>Egresado</option><option value="Baja" ${filter.status === 'Baja' ? 'selected' : ''}>Baja</option></select></div>
-                </div>
-                <div class="bg-white shadow rounded-lg overflow-hidden">
-                    <table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Matrícula</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Programa</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estatus</th></tr></thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            ${filteredStudents.map(student => `<tr data-matricula="${student.matricula}" class="hover:bg-gray-50 cursor-pointer transition-colors"><td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${student.apellido_paterno} ${student.apellido_materno}, ${student.nombre}</div></td><td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-500">${student.matricula}</div></td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${programClass(student.nivel_educativo)}">${student.nivel_educativo}</span></td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass(student.estatus_alumno)}">${student.estatus_alumno}</span></td></tr>`).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            </div>`;
+        studentListBody.innerHTML = '';
+        if (filteredStudents.length > 0) {
+            filteredStudents.forEach(student => {
+                const tr = document.createElement('tr');
+                tr.dataset.matricula = student.matricula;
+                tr.className = 'hover:bg-gray-50 cursor-pointer transition-colors';
+                tr.innerHTML = `<td class="px-4 py-3 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${student.apellido_paterno} ${student.apellido_materno}, ${student.nombre}</div></td>`;
+                studentListBody.appendChild(tr);
+            });
+        } else {
+            studentListBody.innerHTML = `<tr><td class="px-4 py-3 text-center text-gray-500">No hay estudiantes que coincidan.</td></tr>`;
+        }
     }
 
 function renderStudentDetail() {
@@ -178,6 +176,58 @@ function renderStudentDetail() {
         </div>`;
 }
     // --- MANEJADORES DE EVENTOS ---
+    async function loadFilterOptions() {
+        try {
+            const result = await api('get_filters_data');
+            const { instituciones, niveles } = result.data;
+            
+            instituciones.forEach(inst => filtroInstitucion.add(new Option(inst.nombre, inst.id_institucion)));
+            niveles.forEach(nivel => filtroNivel.add(new Option(nivel.nivel_educativo, nivel.nivel_educativo)));
+            
+        } catch (error) {
+            console.error("Error cargando opciones de filtros:", error);
+        }
+    }
+
+        async function loadProgramOptions() {
+        const idInstitucion = filtroInstitucion.value;
+        const nivel = filtroNivel.value;
+        
+        filtroPrograma.innerHTML = '<option value="">Cargando...</option>';
+        filtroPrograma.disabled = true;
+
+        try {
+            const result = await api('get_programs', { institucion: idInstitucion, nivel: nivel });
+            filtroPrograma.innerHTML = '<option value="">Todos los Programas</option>';
+            result.programs.forEach(prog => filtroPrograma.add(new Option(prog.nombre_programa, prog.dgp)));
+        } catch(error) {
+            console.error("Error cargando programas:", error);
+            filtroPrograma.innerHTML = '<option value="">Error al cargar</option>';
+        } finally {
+            filtroPrograma.disabled = false;
+        }
+    }
+
+    async function applyServerFiltersAndFetchStudents() {
+        filter.institucion = filtroInstitucion.value;
+        filter.nivel = filtroNivel.value;
+        filter.programa = filtroPrograma.value;
+        
+        studentListBody.innerHTML = `<tr><td class="px-4 py-3 text-center text-gray-500">Cargando estudiantes...</td></tr>`;
+
+        try {
+            const result = await api('get_all_students', filter);
+            allStudents = result.students;
+            renderStudentList(); // Renderizar con los nuevos datos, aplicando filtros de cliente (search, status)
+        } catch (error) {
+            console.error("Error al aplicar filtros del servidor:", error);
+            studentListBody.innerHTML = `<tr><td class="px-4 py-3 text-center text-danger">${error.message}</td></tr>`;
+        }
+    }
+
+
+
+
     const handleFilterChange = (e) => {
         filter[e.target.id] = e.target.value;
         renderStudentList();
@@ -245,28 +295,23 @@ function renderStudentDetail() {
 
     // --- ASIGNACIÓN DE EVENTOS (Delegación) ---
     if (studentListContainer) {
-        studentListContainer.addEventListener('input', e => {
-            if (['search', 'program', 'status'].includes(e.target.id)) handleFilterChange(e);
-        });
-        studentListContainer.addEventListener('click', handleRowClick);
-    }
-    if(studentDetailContainer) {
-        studentDetailContainer.addEventListener('change', handleGradeChange);
-        studentDetailContainer.addEventListener('submit', e => {
-            if (e.target.id === 'add-note-form') handleAddNote(e);
-        });
+        // Filtros del servidor
+        filtroInstitucion.addEventListener('change', () => { loadProgramOptions().then(applyServerFiltersAndFetchStudents); });
+        filtroNivel.addEventListener('change', () => { loadProgramOptions().then(applyServerFiltersAndFetchStudents); });
+        filtroPrograma.addEventListener('change', applyServerFiltersAndFetchStudents);
+        
+        // Filtros del cliente
+        searchInput.addEventListener('input', () => { filter.search = searchInput.value; renderStudentList(); });
+        filtroStatus.addEventListener('input', () => { filter.status = filtroStatus.value; renderStudentList(); });
+        
+        studentListBody.addEventListener('click', handleRowClick);
     }
     
     // --- INICIALIZACIÓN ---
     async function init() {
-        try {
-            const result = await api('get_all_students');
-            students = result.students;
-            render();
-        } catch (error) {
-            console.error("Error inicial al cargar estudiantes:", error);
-            if(studentListContainer) studentListContainer.innerHTML = `<div class="text-red-600 p-4">${error.message}</div>`;
-        }
+        await loadFilterOptions();
+        await loadProgramOptions();
+        await applyServerFiltersAndFetchStudents();
     }
 
     init();

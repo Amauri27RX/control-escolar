@@ -11,24 +11,85 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 try {
     switch ($action) {
-        case 'get_all_students':
-            // Obtiene una lista simplificada de todos los alumnos
-            $sql = "SELECT 
-                        a.matricula, 
-                        a.nombre, 
-                        a.apellido_paterno, 
-                        a.apellido_materno, 
-                        p.nivel_educativo,
-                        ia.estatus_alumno 
-                    FROM alumno a
-                    LEFT JOIN inscripcion_alumno ia ON a.matricula = ia.matricula
-                    LEFT JOIN programa p ON a.dgp = p.dgp
-                    ORDER BY a.apellido_paterno, a.apellido_materno, a.nombre";
-            $result = $conn->query($sql);
-            $students = $result->fetch_all(MYSQLI_ASSOC);
-            echo json_encode(['success' => true, 'students' => $students]);
+                case 'get_filters_data':
+            $data = [];
+            $data['instituciones'] = $conn->query("SELECT id_institucion, nombre FROM institucion ORDER BY nombre")->fetch_all(MYSQLI_ASSOC);
+            $data['niveles'] = $conn->query("SELECT DISTINCT nivel_educativo FROM programa WHERE nivel_educativo IS NOT NULL ORDER BY nivel_educativo")->fetch_all(MYSQLI_ASSOC);
+            // No cargamos programas aquí, se cargarán dinámicamente
+            echo json_encode(['success' => true, 'data' => $data]);
             break;
 
+        case 'get_programs':
+            $id_institucion = $_GET['institucion'] ?? '';
+            $nivel = $_GET['nivel'] ?? '';
+            
+            $sql = "SELECT dgp, nombre_programa FROM programa WHERE 1=1";
+            $params = [];
+            $types = "";
+
+            if (!empty($id_institucion)) {
+                $sql .= " AND id_institucion = ?";
+                $params[] = $id_institucion;
+                $types .= "s";
+            }
+            if (!empty($nivel)) {
+                $sql .= " AND nivel_educativo = ?";
+                $params[] = $nivel;
+                $types .= "s";
+            }
+            $sql .= " ORDER BY nombre_programa";
+
+            $stmt = $conn->prepare($sql);
+            if (!empty($types)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            $stmt->execute();
+            $programas = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            echo json_encode(['success' => true, 'programs' => $programas]);
+            break;
+
+        case 'get_all_students':
+            $institucion_filtro = $_GET['institucion'] ?? '';
+            $nivel_filtro = $_GET['nivel'] ?? '';
+            $programa_filtro = $_GET['programa'] ?? '';
+
+            $sql = "SELECT 
+                        a.matricula, a.nombre, a.apellido_paterno, a.apellido_materno, 
+                        p.nivel_educativo, ia.estatus_alumno 
+                    FROM alumno a
+                    JOIN inscripcion_alumno ia ON a.matricula = ia.matricula
+                    JOIN programa p ON a.dgp = p.dgp
+                    WHERE 1=1";
+            
+            $params = [];
+            $types = "";
+
+            if (!empty($institucion_filtro)) {
+                $sql .= " AND p.id_institucion = ?";
+                $params[] = $institucion_filtro;
+                $types .= "s";
+            }
+            if (!empty($nivel_filtro)) {
+                $sql .= " AND p.nivel_educativo = ?";
+                $params[] = $nivel_filtro;
+                $types .= "s";
+            }
+            if (!empty($programa_filtro)) {
+                $sql .= " AND a.dgp = ?";
+                $params[] = $programa_filtro;
+                $types .= "s";
+            }
+            $sql .= " ORDER BY a.apellido_paterno, a.apellido_materno, a.nombre";
+
+            $stmt = $conn->prepare($sql);
+            if (!empty($types)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            $stmt->execute();
+            $students = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            echo json_encode(['success' => true, 'students' => $students]);
+            break;
+            
         case 'get_student_details':
             // Obtiene el detalle completo de un alumno
             if (!$matricula) throw new Exception("Matrícula no proporcionada.");
