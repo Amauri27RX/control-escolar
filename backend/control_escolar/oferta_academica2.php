@@ -44,7 +44,7 @@
                                 <th>Materia</th>
                                 <th style="width: 30%;">Docente Asignado</th>
                                 <th style="width: 10%;">Cupo</th>
-                                <th style="width: 15%;">Aula</th>
+                                <th style="width: 15%;">Clase</th>
                                 <th style="width: 10%;" class="text-center">Acción</th>
                             </tr>
                         </thead>
